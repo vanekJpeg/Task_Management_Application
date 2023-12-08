@@ -12,8 +12,8 @@ public class TaskResponse {
     private String header;
     private String description;
     private String statusDescription;
-    private UserResponse author;
-    private UserResponse executor;
-    private List<CommentResponse> commentsResponses;
+    private String authorName;
+    private String executorName;
+    private List<CommentResponse> comments;
     private Date createdAt;
 }

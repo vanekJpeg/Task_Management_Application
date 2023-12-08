@@ -9,7 +9,7 @@ import java.util.Date;
 public class CommentResponse {
     private int id;
     private String text;
-    private UserResponse author;
+    private String authorEmail;
     private Date createdAt;
 
 }

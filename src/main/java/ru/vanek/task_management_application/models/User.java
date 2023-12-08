@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -32,6 +33,13 @@ public class User {
 
     @OneToMany(mappedBy = "author")
     private List<Comment> comments;
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Collection<Role> roles;
 
     public User(String username) {
         this.username = username;

@@ -39,30 +39,37 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskResponse> findAllByAuthorEmail(String authorEmail) {
-        return tasksRepository.findAllByAuthorEmail(authorEmail).stream().map(taskConverter::convertToResponse).collect(Collectors.toList()); //todo exception
+    public List<TaskResponse> findAllByAuthorId(int authorId) {
+
+        return tasksRepository.findAllByAuthorId(authorId).orElseThrow(()->new RuntimeException("ОШИБКА КОТОРЮ НАДО СДЕЛАТЬ"))
+                .stream().map(taskConverter::convertToResponse).collect(Collectors.toList()); //todo exception
     }
 
     @Override
-    public List<TaskResponse> findAllByExecutorEmail(String executorEmail) {
-        return tasksRepository.findAllByAuthorEmail(executorEmail).stream().map(taskConverter::convertToResponse).collect(Collectors.toList()); //todo exception;
+    public List<TaskResponse> findAllByExecutorId(int executorId) {
+
+        return tasksRepository.findAllByExecutorId(executorId).orElseThrow(()->new RuntimeException("ОШИБКА КОТОРЮ НАДО СДЕЛАТЬ"))
+                .stream().map(taskConverter::convertToResponse).collect(Collectors.toList()); //todo exception;
     }
 
     @Override
     public TaskResponse findOne(int id) {
-        return taskConverter.convertToResponse(tasksRepository.findById(id).orElseThrow());//todo exception;
+        return taskConverter.convertToResponse(tasksRepository.findById(id).orElseThrow(()->new RuntimeException("ОШИБКА КОТОРЮ НАДО СДЕЛАТЬ")));//todo exception;
     }
 
     @Override
     @Transactional
     public TaskResponse create(TaskRequest taskRequest,String authorEmail) {
-        Task createdTask = taskConverter.convertToTask(taskRequest);
-        User author = usersRepository.findByEmail(authorEmail).orElseThrow() ;//todo exception;
-        User executor = usersRepository.findByEmail(createdTask.getExecutor().getEmail()).orElseThrow();//todo exception;
+        Task createdTask = new Task();
+        User author = usersRepository.findByEmail(authorEmail).orElseThrow(()->new RuntimeException("ОШИБКА КОТОРЮ НАДО СДЕЛАТЬ")) ;//todo exception;
+        User executor = usersRepository.findByEmail(taskRequest.getExecutorEmail()).orElseThrow(()->new RuntimeException("ОШИБКА КОТОРЮ НАДО СДЕЛАТЬ"));//todo exception;
+        createdTask.setHeader(taskRequest.getHeader());
+        createdTask.setDescription(taskRequest.getDescription());
         createdTask.setExecutor(executor);
         createdTask.setAuthor(author);
         createdTask.setCreatedAt(new Date());
         createdTask.setStatus(Status.WAITING);
+        tasksRepository.save(createdTask);
         return taskConverter.convertToResponse(createdTask);
     }
 
@@ -75,11 +82,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public TaskResponse changeTaskStatus(int taskId, String newStatus,String authorEmail) {
-        if(isAuthor(taskId,authorEmail)||isExecutor(taskId,authorEmail)){
-            Task task= tasksRepository.findById(taskId).orElseThrow();
-            task.setStatus(Status.valueOf(newStatus));
+        if(isAuthor(taskId,authorEmail)|| isExecutor(taskId,authorEmail)){
+            Task task= tasksRepository.findById(taskId).orElseThrow(()->new RuntimeException("ОШИБКА КОТОРЮ НАДО СДЕЛАТЬ"));
+            task.setStatus(Status.fromStringToStatus(newStatus));
             return taskConverter.convertToResponse(tasksRepository.save(task));
-        }else throw new RuntimeException();//todo exception;
+        }else throw new RuntimeException("Изменить статус может только атвор или исполнитель");//todo exception;
 
     }
 
@@ -100,16 +107,16 @@ public class TaskServiceImpl implements TaskService {
     public void delete(int taskId,String authorEmail) {
         if(isAuthor(taskId,authorEmail)){
         tasksRepository.deleteById(taskId);
-        }else throw new RuntimeException();//todo exception;
+        }
     }
 
     @Override
     public boolean isAuthor(int taskId, String userEmail) {
-        return userEmail.equals(tasksRepository.findById(taskId).orElseThrow().getAuthor().getEmail());//todo exception;
+        return userEmail.equals(tasksRepository.findById(taskId).orElseThrow(()->new RuntimeException("ОШИБКА КОТОРЮ НАДО СДЕЛАТЬ")).getAuthor().getEmail());//todo exception;
     }
 
     @Override
     public boolean isExecutor(int taskId, String userEmail) {
-        return userEmail.equals(tasksRepository.findById(taskId).orElseThrow().getExecutor().getEmail());//todo exception;
+        return userEmail.equals(tasksRepository.findById(taskId).orElseThrow(()->new RuntimeException("ОШИБКА КОТОРЮ НАДО СДЕЛАТЬ")).getExecutor().getEmail());//todo exception;
     }
 }

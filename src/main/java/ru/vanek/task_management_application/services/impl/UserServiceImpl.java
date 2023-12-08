@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.vanek.task_management_application.dtos.requests.UserRequest;
 import ru.vanek.task_management_application.dtos.responses.UserResponse;
 import ru.vanek.task_management_application.models.User;
+import ru.vanek.task_management_application.repositories.RoleRepository;
 import ru.vanek.task_management_application.repositories.UsersRepository;
 import ru.vanek.task_management_application.services.UserService;
 import ru.vanek.task_management_application.utils.UserConverter;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UsersRepository userRepository;
     private final UserConverter userConverter;
+    private final RoleRepository roleRepository;
     @Override
     public List<UserResponse> findAll(int page) {
         return userRepository.findAll(PageRequest.of(page,10)).getContent()
@@ -41,6 +43,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User create(UserRequest userRequest) {
         User user = userConverter.convertToUser(userRequest);
+        user.setRoles(List.of(roleRepository.findByName("ROLE_USER").get()));
        return  userRepository.save(user);
     }
     @Override
@@ -67,7 +70,7 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String email) {
         User user =userRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException(String.format(
                 "Пользователь %s не найден",email)));
-        return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(), Collections.EMPTY_LIST);
+        return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(),user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList()));
     }
 
     @Override

@@ -39,25 +39,29 @@ public class CommentsServiceImpl implements CommentsService {
     }
 
     @Override
+    @Transactional
     public CommentResponse publishComment(CommentRequest commentRequest, int taskId,String userEmail) {
         Comment comment = commentConverter.convertToComment(commentRequest);
-        comment.setAuthor(usersRepository.findByEmail("dsds").orElseThrow());//todo principal to user and exception
+        comment.setAuthor(usersRepository.findByEmail(userEmail).orElseThrow(()->new RuntimeException("")));//todo principal to user and exception
         comment.setCreatedAt(new Date());
-        comment.setCommentedTask(tasksRepository.findById(taskId).orElseThrow());//todo exception
+        comment.setCommentedTask(tasksRepository.findById(taskId).orElseThrow(()->new RuntimeException("")));//todo exception
+        commentsRepository.save(comment);
         return commentConverter.convertToResponse(comment);
     }
 
     @Override
+    @Transactional
     public void update(int commentId, CommentRequest commentRequest,String userEmail) {
 
         if(isEnoughRules(commentId,userEmail)){
-            Comment updatedComment = commentsRepository.findById(commentId).orElseThrow();//todo exception
+            Comment updatedComment = commentsRepository.findById(commentId).orElseThrow(()->new RuntimeException(""));//todo exception
             Comment changes = commentConverter.convertToComment(commentRequest);
             updatedComment.setText(changes.getText());
         } else throw new RuntimeException();
     }
 
     @Override
+    @Transactional
     public void delete(int commentId,String userEmail) {
         if(isEnoughRules(commentId,userEmail)){
             commentsRepository.deleteById(commentId);
@@ -67,6 +71,6 @@ public class CommentsServiceImpl implements CommentsService {
 
     @Override
     public boolean isEnoughRules(int commentId, String email) {
-        return email.equals(commentsRepository.findById(commentId).orElseThrow().getAuthor().getEmail());//todo exception
+        return email.equals(commentsRepository.findById(commentId).orElseThrow(()->new RuntimeException("")).getAuthor().getEmail());//todo exception
     }
 }

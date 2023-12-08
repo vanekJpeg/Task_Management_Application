@@ -10,14 +10,9 @@ import ru.vanek.task_management_application.utils.UserConverter;
 
 @Component
 public class CommentConverterImpl implements CommentConverter {
-    private final UserConverter userConverter;
-
-    public CommentConverterImpl(@Lazy UserConverter userConverter) {
-        this.userConverter = userConverter;
-    }
     @Override
     public CommentResponse convertToResponse(Comment comment) {
-        return new CommentResponse(comment.getId(),comment.getText(),userConverter.convertUserToResponse(comment.getAuthor()),comment.getCreatedAt());
+        return new CommentResponse(comment.getId(),comment.getText(),comment.getAuthor().getEmail(),comment.getCreatedAt());
     }
 
     @Override

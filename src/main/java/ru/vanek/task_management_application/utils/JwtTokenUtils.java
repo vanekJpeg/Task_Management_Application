@@ -33,6 +33,9 @@ public class JwtTokenUtils {
 
     public String generateToken(UserDetails userDetails){
         Map<String ,Object> claims =new HashMap<>();
+        List<String> roleList =userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        claims.put("roles",roleList);
+
         Date issuedDate= new Date();
         Date expiredDate = new Date(issuedDate.getTime()+jwtLifetime.toMillis());
 

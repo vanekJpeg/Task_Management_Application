@@ -42,13 +42,13 @@ public class UsersController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> edit(@PathVariable("id") int id, @AuthenticationPrincipal UserDetails user, @RequestBody UserRequest userRequest) {
-        userService.update(id,userRequest,user.getUsername());
+    public ResponseEntity<HttpStatus> edit(@PathVariable("id") int id,  Principal user, @RequestBody UserRequest userRequest) {
+        userService.update(id,userRequest,user.getName());
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable("id") int id,@AuthenticationPrincipal UserDetails user) {
-        userService.delete(id,user.getUsername());
+    public ResponseEntity<HttpStatus> delete(@PathVariable("id") int id,Principal user) {
+        userService.delete(id,user.getName());
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

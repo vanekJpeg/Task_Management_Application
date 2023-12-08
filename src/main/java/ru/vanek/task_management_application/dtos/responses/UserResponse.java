@@ -10,7 +10,7 @@ public class UserResponse {
     private int id;
     private String username;
     private String email;
-    private List<TaskResponse> createdTasks;
-    private List<TaskResponse> toDoTasks;
-    private List<CommentResponse> comments;
+    private List<Integer> createdTasksId;
+    private List<Integer> toDoTasksId;
+    private List<Integer> commentsId;
 }
