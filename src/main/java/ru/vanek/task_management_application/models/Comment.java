@@ -22,7 +22,7 @@ public class Comment {
     private Date createdAt;
 
     @ManyToOne()
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JoinColumn(name = "author_id",referencedColumnName = "id")
     private User author;
 
     @ManyToOne()

@@ -10,5 +10,5 @@ public class TaskRequest {
 
     private String description;
 
-    private String executorName;
+    private String executorEmail;
 }

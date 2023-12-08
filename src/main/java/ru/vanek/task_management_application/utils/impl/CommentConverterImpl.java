@@ -1,5 +1,6 @@
 package ru.vanek.task_management_application.utils.impl;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import ru.vanek.task_management_application.dtos.requests.CommentRequest;
 import ru.vanek.task_management_application.dtos.responses.CommentResponse;
@@ -11,7 +12,7 @@ import ru.vanek.task_management_application.utils.UserConverter;
 public class CommentConverterImpl implements CommentConverter {
     private final UserConverter userConverter;
 
-    public CommentConverterImpl(UserConverter userConverter) {
+    public CommentConverterImpl(@Lazy UserConverter userConverter) {
         this.userConverter = userConverter;
     }
     @Override

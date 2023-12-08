@@ -26,11 +26,11 @@ public class Task {
     private Status status;//TODO автоматическое назначение на в ожидании
 
     @ManyToOne()
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JoinColumn(name = "author_id",referencedColumnName = "id")
     private User author;//TODO автоматическое назначение
 
     @ManyToOne()
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JoinColumn(name = "executor_id",referencedColumnName = "id")
     private User executor;
 
     @OneToMany(mappedBy = "commentedTask")

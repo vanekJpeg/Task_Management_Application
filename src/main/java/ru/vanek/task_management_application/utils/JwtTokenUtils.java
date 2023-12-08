@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenUtils {
 
-    @Value("${jwt.secret}") //todo add secret
+    @Value("${jwt.secret}")
     private  String secret;
     @DurationUnit(ChronoUnit.MINUTES)
     private Duration jwtLifetime;
@@ -33,9 +33,6 @@ public class JwtTokenUtils {
 
     public String generateToken(UserDetails userDetails){
         Map<String ,Object> claims =new HashMap<>();
-        List<String> roleList =userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-        claims.put("roles",roleList);
-
         Date issuedDate= new Date();
         Date expiredDate = new Date(issuedDate.getTime()+jwtLifetime.toMillis());
 
@@ -53,7 +50,6 @@ public class JwtTokenUtils {
     public List<String> getRoles(String token){
         return getAllClaimsFromToken(token).get("roles",List.class);
     }
-
     public Claims getAllClaimsFromToken(String token){
         return Jwts.parserBuilder().setSigningKey(hmacKey).build().parseClaimsJws(token).getBody();
     }

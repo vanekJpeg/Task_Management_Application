@@ -37,8 +37,17 @@ public class SecurityConfig {
         return   http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
+
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST,"/pastes/create").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/api/tasks").authenticated()
+                        .requestMatchers(HttpMethod.PUT,"/api/tasks/{id}/changeStatus").authenticated()
+                        .requestMatchers(HttpMethod.PUT,"/api/tasks/{id}/update").authenticated()
+                        .requestMatchers(HttpMethod.DELETE,"/api/tasks/{id}/delete").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/api/tasks/{id}/comments").authenticated()
+                        .requestMatchers(HttpMethod.PUT,"/api/tasks/{id}/comments/{commentId}").authenticated()
+                        .requestMatchers(HttpMethod.DELETE,"/api/tasks/{id}/comments/{commentId}").authenticated()
+                        .requestMatchers(HttpMethod.PUT,"/api/users/{id}").authenticated()
+                        .requestMatchers(HttpMethod.DELETE,"/api/users/{id}").authenticated()
                         .anyRequest().permitAll()
                 ).sessionManagement(sessionManagement->sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exceptionHandling->exceptionHandling .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))

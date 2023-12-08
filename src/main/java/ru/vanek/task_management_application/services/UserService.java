@@ -13,9 +13,9 @@ public interface UserService extends UserDetailsService {
     public List<UserResponse> findAll(int page);
     public UserResponse findOne(int id);
     public User create(UserRequest userRequest);
-    public void update(int userId, UserRequest userRequest);
-    public void delete(int id);
-    public UserResponse findByEmail(String email);
+    public void update(int userId, UserRequest userRequest, String userEmail);
+    public void delete(int id, String userEmail);
+    public User findByEmail(String email);
     public UserDetails loadUserByUsername(String username);
     public boolean isEnoughRules(int userId, String username);
 }

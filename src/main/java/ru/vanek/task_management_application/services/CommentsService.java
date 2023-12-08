@@ -9,8 +9,8 @@ import java.util.List;
 public interface CommentsService {
     public List<CommentResponse> findAll(int page);
     public CommentResponse findOne(int id);
-    public CommentResponse publishComment(CommentRequest commentRequest,int taskId);
-    public void update(int commentId,CommentRequest commentRequest);
-    public void delete(int id);
-    public boolean isEnoughRules(int userId, String username);
+    public CommentResponse publishComment(CommentRequest commentRequest,int taskId,String userEmail);
+    public void update(int commentId,CommentRequest commentRequest,String userEmail);
+    public void delete(int id,String userEmail);
+    public boolean isEnoughRules(int userId, String userEmail);
 }
