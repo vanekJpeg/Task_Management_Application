@@ -24,7 +24,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
-@Tag(name = "User")
+@Tag(name = "user")
 public class UsersController {
     private final UserService userService;
     private final AuthService authService;

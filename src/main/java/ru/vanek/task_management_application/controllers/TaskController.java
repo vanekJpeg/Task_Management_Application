@@ -29,7 +29,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/tasks")
-@Tag(name = "Task")
 public class TaskController {
     private final TaskService taskService;
     private final CommentsService commentsService;
@@ -47,7 +46,8 @@ public class TaskController {
                     @ApiResponse(description = "Неизвестная ошибка", responseCode = "400",
                             content = @Content(
                                     schema = @Schema(implementation = ExceptionResponse.class)))
-            }
+            },tags = "task"
+
     )
     @GetMapping()
     public ResponseEntity<List<TaskResponse>> getAllTasks(@RequestParam(value = "page",required = false, defaultValue = "0" ) int page){
@@ -65,7 +65,7 @@ public class TaskController {
                     @ApiResponse(description = "Неверный идентификатор", responseCode = "405",
                             content = @Content(
                                     schema = @Schema(implementation = ExceptionResponse.class)))
-            }
+            },tags = "task"
     )
     @GetMapping("/executor/{executorId}")
     public ResponseEntity<List<TaskResponse>> getTasksByExecutorId(@PathVariable("executorId") int executorId){
@@ -83,7 +83,7 @@ public class TaskController {
                     @ApiResponse(description = "Неверный идентификатор", responseCode = "405",
                             content = @Content(
                                     schema = @Schema(implementation = ExceptionResponse.class)))
-            }
+            },tags = "task"
     )
     @GetMapping("/author/{authorId}")
     public ResponseEntity<List<TaskResponse>> getTasksByAuthorId(@PathVariable("authorId") int authorId){
@@ -101,7 +101,7 @@ public class TaskController {
                     @ApiResponse(description = "Неверный идентификатор", responseCode = "405",
                             content = @Content(
                                     schema = @Schema(implementation = ExceptionResponse.class)))
-            }
+            },tags = "task"
     )
     @GetMapping("/{id}")
     public ResponseEntity<TaskResponse> getTaskById(@PathVariable("id") int id){
@@ -125,7 +125,7 @@ public class TaskController {
                     @ApiResponse(description = "Время  жизни токена вышло, авторизйтесь заново", responseCode = "407",
                             content = @Content(
                                     schema = @Schema(implementation = ExceptionResponse.class)))
-            }
+            },tags = "task"
     )
     @PostMapping()
     @SecurityRequirement(name = "bearerAuth")
@@ -158,7 +158,7 @@ public class TaskController {
                     @ApiResponse(description = "Время  жизни токена вышло, авторизйтесь заново", responseCode = "407",
                             content = @Content(
                                     schema = @Schema(implementation = ExceptionResponse.class)))
-            }
+            },tags = "task"
     )
     @PutMapping("/{id}/changeStatus")
     @SecurityRequirement(name = "bearerAuth")
@@ -189,7 +189,7 @@ public class TaskController {
                     @ApiResponse(description = "Время  жизни токена вышло, авторизйтесь заново", responseCode = "407",
                             content = @Content(
                                     schema = @Schema(implementation = ExceptionResponse.class)))
-    }
+    },tags = "task"
     )
     @PutMapping("/{id}/update")
     @SecurityRequirement(name = "bearerAuth")
@@ -217,7 +217,7 @@ public class TaskController {
                     @ApiResponse(description = "Время  жизни токена вышло, авторизйтесь заново", responseCode = "407",
                             content = @Content(
                                     schema = @Schema(implementation = ExceptionResponse.class)))
-            }
+            },tags = "task"
     )
     @DeleteMapping("/{id}/delete")
     @SecurityRequirement(name = "bearerAuth")
@@ -240,7 +240,7 @@ public class TaskController {
                     @ApiResponse(description = "Отказано в доступе", responseCode = "405",
                             content = @Content(
                                     schema = @Schema(implementation = ExceptionResponse.class)))
-            }
+            },tags = "comment"
     )
     @GetMapping("/{id}/comments")
     public ResponseEntity<List<CommentResponse>> getComments(@PathVariable int id){
@@ -264,7 +264,7 @@ public class TaskController {
                     @ApiResponse(description = "Время  жизни токена вышло, авторизйтесь заново", responseCode = "407",
                             content = @Content(
                                     schema = @Schema(implementation = ExceptionResponse.class)))
-            }
+            },tags = "comment"
     )
     @PostMapping("/{id}/comments")
     @SecurityRequirement(name = "bearerAuth")
@@ -294,7 +294,7 @@ public class TaskController {
                     @ApiResponse(description = "Отказано в доступе", responseCode = "405",
                             content = @Content(
                                     schema = @Schema(implementation = ExceptionResponse.class)))
-            }
+            },tags = "comment"
     )
     @GetMapping("/{id}/comments/{commentId}")
     public ResponseEntity<CommentResponse> getCommentById(@PathVariable("id") int id,@PathVariable("commentId") int commentId) {
@@ -321,7 +321,7 @@ public class TaskController {
                     @ApiResponse(description = "Время  жизни токена вышло, авторизйтесь заново", responseCode = "407",
                             content = @Content(
                                     schema = @Schema(implementation = ExceptionResponse.class)))
-            }
+            },tags = "comment"
     )
     @PutMapping("/{id}/comments/{commentId}")
     @SecurityRequirement(name = "bearerAuth")
@@ -351,7 +351,7 @@ public class TaskController {
                             content = @Content(
                                     schema = @Schema(implementation = ExceptionResponse.class)))
 
-            }
+            },tags = "comment"
     )
     @DeleteMapping("/{id}/comments/{commentId}")
     @SecurityRequirement(name = "bearerAuth")

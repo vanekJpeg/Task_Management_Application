@@ -20,7 +20,11 @@ public class TaskConverterImpl implements TaskConverter {
     }
     public TaskResponse convertToResponse(Task task){
         return new TaskResponse(task.getId(),task.getHeader(),task.getDescription()
-                ,task.getStatus().getStringValueOfStatus(),task.getAuthor().getEmail(),task.getExecutor().getEmail(),
+                ,task.getStatus().getStringValueOfStatus(),
+                task.getAuthor()==null
+                        ?"Автор удален":task.getAuthor().getEmail()
+                ,task.getExecutor()==null
+                ?"Исполнитель удален":task.getExecutor().getEmail(),
                 task.getComments()==null?(Collections.emptyList()):
                         task.getComments().stream().map(commentConverter::convertToResponse).collect(Collectors.toList()),task.getCreatedAt());
     }

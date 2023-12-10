@@ -115,7 +115,7 @@ public class TaskServiceImpl implements TaskService {
     public void delete(int taskId,String authorEmail) {
         if(isAuthor(taskId,authorEmail)){
         tasksRepository.deleteById(taskId);
-        }throw new NotEnoughRulesException("Вы не являетесь автором задачи, поэтому не можете выполнить данную операцию");
+        } else throw new NotEnoughRulesException("Вы не являетесь автором задачи, поэтому не можете выполнить данную операцию");
     }
 
     @Override

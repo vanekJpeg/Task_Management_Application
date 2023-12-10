@@ -22,10 +22,10 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 @Slf4j
 public class ExceptionsController {
-    @ExceptionHandler
-    public ResponseEntity<ExceptionResponse> handleException(Exception e){
-        return new ResponseEntity<>(new ExceptionResponse("Неизвестная ошибка",new Date()),HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler
+//    public ResponseEntity<ExceptionResponse> handleException(Exception e){
+//        return new ResponseEntity<>(new ExceptionResponse("Неизвестная ошибка",new Date()),HttpStatus.BAD_REQUEST);
+//    }
     @ExceptionHandler
     public ResponseEntity<ExceptionResponse> handleIllegalArgumentException(IllegalArgumentException e){
         return new ResponseEntity<>(new ExceptionResponse(e.getMessage(),new Date()),HttpStatus.NOT_FOUND);
