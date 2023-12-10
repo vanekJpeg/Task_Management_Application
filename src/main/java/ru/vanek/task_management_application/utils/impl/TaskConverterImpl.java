@@ -33,7 +33,7 @@ public class TaskConverterImpl implements TaskConverter {
         user.setEmail(taskRequest.getExecutorEmail());
         task.setHeader(taskRequest.getHeader());
         task.setDescription(taskRequest.getDescription());
-        task.setExecutor(user); //todo добавить остальные параметры в сервисе
+        task.setExecutor(user);
         return task;
     }
 }

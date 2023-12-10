@@ -7,7 +7,6 @@ import ru.vanek.task_management_application.dtos.responses.CommentResponse;
 import java.util.List;
 @Service
 public interface CommentsService {
-    public List<CommentResponse> findAll(int page);
     public CommentResponse findOne(int id);
     public CommentResponse publishComment(CommentRequest commentRequest,int taskId,String userEmail);
     public void update(int commentId,CommentRequest commentRequest,String userEmail);

@@ -16,4 +16,7 @@ public class TaskResponse {
     private String executorName;
     private List<CommentResponse> comments;
     private Date createdAt;
+
+    public TaskResponse() {
+    }
 }

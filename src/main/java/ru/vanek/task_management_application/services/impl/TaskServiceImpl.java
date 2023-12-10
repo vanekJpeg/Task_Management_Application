@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.vanek.task_management_application.dtos.requests.TaskRequest;
 import ru.vanek.task_management_application.dtos.responses.CommentResponse;
 import ru.vanek.task_management_application.dtos.responses.TaskResponse;
+import ru.vanek.task_management_application.exceptions.NotEnoughRulesException;
 import ru.vanek.task_management_application.models.Task;
 import ru.vanek.task_management_application.models.User;
 import ru.vanek.task_management_application.repositories.CommentsRepository;
@@ -19,6 +20,7 @@ import ru.vanek.task_management_application.utils.TaskConverter;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,28 +43,33 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskResponse> findAllByAuthorId(int authorId) {
 
-        return tasksRepository.findAllByAuthorId(authorId).orElseThrow(()->new RuntimeException("ОШИБКА КОТОРЮ НАДО СДЕЛАТЬ"))
-                .stream().map(taskConverter::convertToResponse).collect(Collectors.toList()); //todo exception
+        return tasksRepository.findAllByAuthorId(authorId).
+                orElseThrow(()->new NoSuchElementException("Пользователя с идентификатором "+authorId+" - не существует"))
+                .stream().map(taskConverter::convertToResponse).collect(Collectors.toList());
     }
 
     @Override
     public List<TaskResponse> findAllByExecutorId(int executorId) {
-
-        return tasksRepository.findAllByExecutorId(executorId).orElseThrow(()->new RuntimeException("ОШИБКА КОТОРЮ НАДО СДЕЛАТЬ"))
-                .stream().map(taskConverter::convertToResponse).collect(Collectors.toList()); //todo exception;
+        return tasksRepository.findAllByExecutorId(executorId).
+                orElseThrow(()->new NoSuchElementException("Пользователя с идентификатором "+executorId+" - не существует"))
+                .stream().map(taskConverter::convertToResponse).collect(Collectors.toList());
     }
 
     @Override
     public TaskResponse findOne(int id) {
-        return taskConverter.convertToResponse(tasksRepository.findById(id).orElseThrow(()->new RuntimeException("ОШИБКА КОТОРЮ НАДО СДЕЛАТЬ")));//todo exception;
+        return taskConverter.convertToResponse(tasksRepository.findById(id).
+                orElseThrow(()->new NoSuchElementException("Задачи с идентификатором "+id+" - не существует")));
     }
 
     @Override
     @Transactional
     public TaskResponse create(TaskRequest taskRequest,String authorEmail) {
         Task createdTask = new Task();
-        User author = usersRepository.findByEmail(authorEmail).orElseThrow(()->new RuntimeException("ОШИБКА КОТОРЮ НАДО СДЕЛАТЬ")) ;//todo exception;
-        User executor = usersRepository.findByEmail(taskRequest.getExecutorEmail()).orElseThrow(()->new RuntimeException("ОШИБКА КОТОРЮ НАДО СДЕЛАТЬ"));//todo exception;
+        String executorEmail;
+        User author = usersRepository.findByEmail(authorEmail)
+                .orElseThrow(()->new NoSuchElementException("Пользователя с emai'ом "+authorEmail+" - не существует")) ;
+        User executor = usersRepository.findByEmail(executorEmail=(taskRequest.getExecutorEmail()))
+                .orElseThrow(()->new NoSuchElementException("Пользователя с emai'ом "+executorEmail+" - не существует"));
         createdTask.setHeader(taskRequest.getHeader());
         createdTask.setDescription(taskRequest.getDescription());
         createdTask.setExecutor(executor);
@@ -75,18 +82,19 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<CommentResponse> getAllTaskCommentsByTaskId(int taskId) {
-        return commentsRepository.findAllByCommentedTaskId(taskId).orElseThrow()
-                .stream().map(commentConverter::convertToResponse).collect(Collectors.toList());//todo exception;
+        return commentsRepository.findAllByCommentedTaskId(taskId)
+                .orElseThrow(()->new NoSuchElementException("Задачи с идентификатором "+taskId+" - не существует"))
+                .stream().map(commentConverter::convertToResponse).collect(Collectors.toList());
     }
 
     @Override
     @Transactional
     public TaskResponse changeTaskStatus(int taskId, String newStatus,String authorEmail) {
         if(isAuthor(taskId,authorEmail)|| isExecutor(taskId,authorEmail)){
-            Task task= tasksRepository.findById(taskId).orElseThrow(()->new RuntimeException("ОШИБКА КОТОРЮ НАДО СДЕЛАТЬ"));
+            Task task= tasksRepository.findById(taskId).orElseThrow(()->new NoSuchElementException("Задачи с идентификатором "+taskId+" - не существует"));
             task.setStatus(Status.fromStringToStatus(newStatus));
             return taskConverter.convertToResponse(tasksRepository.save(task));
-        }else throw new RuntimeException("Изменить статус может только атвор или исполнитель");//todo exception;
+        }else throw new NotEnoughRulesException("Изменить статус может только атвор или исполнитель");
 
     }
 
@@ -99,7 +107,7 @@ public class TaskServiceImpl implements TaskService {
             task.setExecutor(usersRepository.findByEmail(taskRequest.getExecutorEmail()).orElseThrow());
             task.setHeader(taskRequest.getHeader());
             return taskConverter.convertToResponse(tasksRepository.save(task));
-        }else throw new RuntimeException();//todo exception;
+        }else throw new NotEnoughRulesException("Вы не являетесь автором задачи, поэтому не можете выполнить данную операцию");
     }
 
     @Override
@@ -107,16 +115,18 @@ public class TaskServiceImpl implements TaskService {
     public void delete(int taskId,String authorEmail) {
         if(isAuthor(taskId,authorEmail)){
         tasksRepository.deleteById(taskId);
-        }
+        }throw new NotEnoughRulesException("Вы не являетесь автором задачи, поэтому не можете выполнить данную операцию");
     }
 
     @Override
     public boolean isAuthor(int taskId, String userEmail) {
-        return userEmail.equals(tasksRepository.findById(taskId).orElseThrow(()->new RuntimeException("ОШИБКА КОТОРЮ НАДО СДЕЛАТЬ")).getAuthor().getEmail());//todo exception;
+        return userEmail.equals(tasksRepository.findById(taskId).
+                orElseThrow(()->new NoSuchElementException("Пользователя с emai'ом "+userEmail+" - не существует")).getAuthor().getEmail());
     }
 
     @Override
     public boolean isExecutor(int taskId, String userEmail) {
-        return userEmail.equals(tasksRepository.findById(taskId).orElseThrow(()->new RuntimeException("ОШИБКА КОТОРЮ НАДО СДЕЛАТЬ")).getExecutor().getEmail());//todo exception;
+        return userEmail.equals(tasksRepository.findById(taskId).
+                orElseThrow(()->new NoSuchElementException("Пользователя с emai'ом "+userEmail+" - не существует")).getExecutor().getEmail());
     }
 }

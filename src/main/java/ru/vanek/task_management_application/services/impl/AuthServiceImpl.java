@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import ru.vanek.task_management_application.dtos.requests.JwtRequest;
 import ru.vanek.task_management_application.dtos.requests.UserRequest;
 import ru.vanek.task_management_application.dtos.responses.JwtResponse;
+import ru.vanek.task_management_application.dtos.responses.UserResponse;
 import ru.vanek.task_management_application.exceptions.AuthException;
 import ru.vanek.task_management_application.models.User;
 import ru.vanek.task_management_application.services.AuthService;
@@ -31,19 +32,19 @@ public class AuthServiceImpl implements AuthService {
         this.userConverter = userConverter;
         this.authenticationManager = authenticationManager;
     }
-    public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest){
+    public JwtResponse createAuthToken(@RequestBody JwtRequest authRequest){
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(),authRequest.getPassword()));
         UserDetails userDetails = userService.loadUserByUsername(authRequest.getEmail());
         String token= jwtTokenUtils.generateToken(userDetails);
-        return ResponseEntity.ok(new JwtResponse(token));
+        return new JwtResponse(token);
     }
-    public ResponseEntity<?> createNewUser(@RequestBody UserRequest userRequest) {
+    public UserResponse createNewUser(@RequestBody UserRequest userRequest) {
         if(!userRequest.getPassword().equals(userRequest.getConfirmPassword())){
-            throw new AuthException("Пароли не совпадают");// todo переделать исключения
+            throw new AuthException("Пароли не совпадают");
         }if(userService.findByEmail(userRequest.getEmail())!=null){
             throw new AuthException("Пользователь с указанным email'ом уже существует");
         }
         User user= userService.create(userRequest);
-        return ResponseEntity.ok(userConverter.convertUserToResponse(user));
+        return userConverter.convertUserToResponse(user);
     }
 }

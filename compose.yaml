@@ -1,0 +1,32 @@
+services:
+  tomcat:
+    image: tomcat:10.1.16-jdk17-temurin
+    restart: always
+    environment:
+      DBHOST: db
+      DBPORT: 5432
+      DBNAME: TaskDB
+    ports:
+      - 8088:8080
+    volumes:
+      - ./tomcat/logs:/usr/local/tomcat/logs
+      - ./tomcat/webapps:/usr/local/tomcat/webapps
+    links:
+      - "db"
+
+  db:
+    image: postgres:16.1
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: TaskDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080

@@ -26,7 +26,7 @@ public class JwtTokenUtils {
     private Key hmacKey;
     @PostConstruct
     public void init(){
-        jwtLifetime = Duration.ofMinutes(10);
+        jwtLifetime = Duration.ofMinutes(30);
         hmacKey = new SecretKeySpec(Base64.getDecoder().decode(secret),
                 SignatureAlgorithm.HS256.getJcaName());
     }

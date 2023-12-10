@@ -37,7 +37,6 @@ public class SecurityConfig {
         return   http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
-
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST,"/api/tasks").authenticated()
                         .requestMatchers(HttpMethod.PUT,"/api/tasks/{id}/changeStatus").authenticated()

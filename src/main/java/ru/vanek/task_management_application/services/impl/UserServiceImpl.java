@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.vanek.task_management_application.dtos.requests.UserRequest;
 import ru.vanek.task_management_application.dtos.responses.UserResponse;
+import ru.vanek.task_management_application.exceptions.NotEnoughRulesException;
 import ru.vanek.task_management_application.models.User;
 import ru.vanek.task_management_application.repositories.RoleRepository;
 import ru.vanek.task_management_application.repositories.UsersRepository;
@@ -17,6 +18,7 @@ import ru.vanek.task_management_application.utils.UserConverter;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
@@ -33,11 +35,12 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public UserResponse findOne(int id) {
-        return userConverter.convertUserToResponse(userRepository.findById(id).orElseThrow());//todo userNotfound
+        return userConverter.convertUserToResponse(userRepository.findById(id)
+                .orElseThrow(()->new NoSuchElementException("Пользователя с идентификатором "+id+" - не существует")));
     }
     @Override
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElse(null);//todo userNotfound;
+        return userRepository.findByEmail(email).orElse(null);//так надо
     }
     @Override
     @Transactional
@@ -50,11 +53,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void update(int userId, UserRequest userRequest, String userEmail) {
         if(isEnoughRules(userId,userEmail)){
-            User userToUpdate = userRepository.findById(userId).orElseThrow(()-> new RuntimeException("UserNotFound"));
+            User userToUpdate = userRepository.findById(userId).
+                    orElseThrow(()->new NoSuchElementException("Пользователя с идентификатором "+userId+" - не существует"));
             User changes = userConverter.convertToUser(userRequest);
             userToUpdate.setUsername(changes.getUsername());
             userToUpdate.setPassword(changes.getPassword());
             userToUpdate.setEmail(changes.getEmail());
+            userRepository.save(userToUpdate);
         }
 
     }
@@ -63,7 +68,7 @@ public class UserServiceImpl implements UserService {
     public void delete(int userId, String userEmail) {
         if(isEnoughRules(userId,userEmail)){
             userRepository.delete(userRepository.findById(userId).orElseThrow());
-        }
+        }else throw new NotEnoughRulesException("Удалять и изменять пользователя может только сам пользоваетль");
     }
 
     @Override
@@ -75,7 +80,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isEnoughRules(int userId, String email){
-       return email.equals(userRepository.findById(userId).orElseThrow(()-> new RuntimeException("UserNotFound")).getEmail());//todo userNotfound
+       return email.equals(userRepository.findById(userId)
+               .orElseThrow(()->new NoSuchElementException("Пользователя с идентификатором "+userId+" - не существует")).getEmail());
     }
 
 }

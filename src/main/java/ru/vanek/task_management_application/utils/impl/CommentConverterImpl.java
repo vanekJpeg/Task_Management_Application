@@ -17,6 +17,7 @@ public class CommentConverterImpl implements CommentConverter {
 
     @Override
     public Comment convertToComment(CommentRequest commentRequest) {
+
         Comment comment = new Comment();
         comment.setText(commentRequest.getText());
         return comment;

@@ -1,7 +1,10 @@
 package ru.vanek.task_management_application.utils;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(enumAsRef = true)
 public enum Status {
-    WAITING("в ожидании"), IN_PROCESS("выполнятеся"), COMPLETED("выполнено");
+    WAITING("в ожидании"), IN_PROCESS("выполняется"), COMPLETED("выполнено");
 
     private String status;
 

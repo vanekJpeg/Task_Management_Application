@@ -1,6 +1,7 @@
 package ru.vanek.task_management_application.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 
@@ -44,6 +45,13 @@ public class User {
     public User(String username) {
         this.username = username;
 
+    }
+
+    public User(int id, String username, String password, String email) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
     }
 
     public User() {

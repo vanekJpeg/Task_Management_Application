@@ -13,4 +13,10 @@ public class UserResponse {
     private List<Integer> createdTasksId;
     private List<Integer> toDoTasksId;
     private List<Integer> commentsId;
+
+    public UserResponse(int id, String username, String email) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+    }
 }

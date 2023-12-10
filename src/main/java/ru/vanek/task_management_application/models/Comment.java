@@ -28,4 +28,13 @@ public class Comment {
     @ManyToOne()
     @JoinColumn(name = "task_id",referencedColumnName = "id")
     private Task commentedTask;
+
+    public Comment() {
+    }
+
+    public Comment(int id, String text, Date createdAt) {
+        this.id = id;
+        this.text = text;
+        this.createdAt = createdAt;
+    }
 }
