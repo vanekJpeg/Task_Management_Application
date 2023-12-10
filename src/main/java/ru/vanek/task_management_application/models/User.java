@@ -1,7 +1,6 @@
 package ru.vanek.task_management_application.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 

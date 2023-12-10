@@ -10,18 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.vanek.task_management_application.dtos.requests.JwtRequest;
-import ru.vanek.task_management_application.dtos.requests.TaskRequest;
 import ru.vanek.task_management_application.dtos.requests.UserRequest;
 import ru.vanek.task_management_application.dtos.responses.JwtResponse;
-import ru.vanek.task_management_application.dtos.responses.TaskResponse;
 import ru.vanek.task_management_application.dtos.responses.UserResponse;
-import ru.vanek.task_management_application.models.User;
 import ru.vanek.task_management_application.services.AuthService;
-import ru.vanek.task_management_application.services.CommentsService;
-import ru.vanek.task_management_application.services.TaskService;
 import ru.vanek.task_management_application.services.UserService;
 
-import java.security.Principal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,7 +1,6 @@
 package ru.vanek.task_management_application.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.vanek.task_management_application.dtos.requests.CommentRequest;
@@ -15,7 +14,6 @@ import ru.vanek.task_management_application.services.CommentsService;
 import ru.vanek.task_management_application.utils.CommentConverter;
 
 import java.util.Date;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service

@@ -1,31 +1,24 @@
 package ru.vanek.task_management_application.services.impl;
 
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.vanek.task_management_application.dtos.requests.JwtRequest;
-import ru.vanek.task_management_application.dtos.responses.TaskResponse;
 import ru.vanek.task_management_application.models.Role;
 import ru.vanek.task_management_application.services.UserService;
 import ru.vanek.task_management_application.utils.JwtTokenUtils;
-import ru.vanek.task_management_application.utils.UserConverter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
 @ExtendWith(MockitoExtension.class)
 class AuthServiceImplTest {
     @Mock

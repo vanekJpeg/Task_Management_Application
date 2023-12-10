@@ -13,11 +13,10 @@ import ru.vanek.task_management_application.dtos.requests.CommentRequest;
 import ru.vanek.task_management_application.dtos.requests.TaskRequest;
 import ru.vanek.task_management_application.dtos.responses.CommentResponse;
 import ru.vanek.task_management_application.dtos.responses.TaskResponse;
-import ru.vanek.task_management_application.models.Comment;
 import ru.vanek.task_management_application.models.User;
 import ru.vanek.task_management_application.services.CommentsService;
 import ru.vanek.task_management_application.services.TaskService;
-import ru.vanek.task_management_application.utils.TaskConverter;
+
 
 import java.security.Principal;
 import java.util.Date;

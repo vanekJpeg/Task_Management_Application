@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public enum Status {
     WAITING("в ожидании"), IN_PROCESS("выполняется"), COMPLETED("выполнено");
 
-    private String status;
+    private final String status;
 
     Status(String status) {
         this.status = status;

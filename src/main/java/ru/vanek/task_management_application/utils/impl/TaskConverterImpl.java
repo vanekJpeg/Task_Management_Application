@@ -7,12 +7,9 @@ import ru.vanek.task_management_application.dtos.responses.TaskResponse;
 import ru.vanek.task_management_application.models.Task;
 import ru.vanek.task_management_application.models.User;
 import ru.vanek.task_management_application.utils.CommentConverter;
-import ru.vanek.task_management_application.utils.Status;
 import ru.vanek.task_management_application.utils.TaskConverter;
-import ru.vanek.task_management_application.utils.UserConverter;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.stream.Collectors;
 
 @Component

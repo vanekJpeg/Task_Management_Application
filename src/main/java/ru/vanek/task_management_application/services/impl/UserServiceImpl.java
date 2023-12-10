@@ -16,7 +16,6 @@ import ru.vanek.task_management_application.repositories.UsersRepository;
 import ru.vanek.task_management_application.services.UserService;
 import ru.vanek.task_management_application.utils.UserConverter;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
