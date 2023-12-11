@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
         ),
         servers = @Server(
                 description = "Локальный сервевр",
-                url = "http://localhost:8088/test"
+                url = "http://localhost:8088"
 ))
 @SecurityScheme(
         name = "bearerAuth",
