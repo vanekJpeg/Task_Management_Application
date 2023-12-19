@@ -28,13 +28,4 @@ public class TaskConverterImpl implements TaskConverter {
                 task.getComments()==null?(Collections.emptyList()):
                         task.getComments().stream().map(commentConverter::convertToResponse).collect(Collectors.toList()),task.getCreatedAt());
     }
-    public Task convertToTask(TaskRequest taskRequest){
-        Task task = new Task();
-        User user = new User();
-        user.setEmail(taskRequest.getExecutorEmail());
-        task.setHeader(taskRequest.getHeader());
-        task.setDescription(taskRequest.getDescription());
-        task.setExecutor(user);
-        return task;
-    }
 }

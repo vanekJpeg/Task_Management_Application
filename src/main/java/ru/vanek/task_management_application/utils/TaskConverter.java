@@ -6,5 +6,4 @@ import ru.vanek.task_management_application.models.Task;
 
 public interface TaskConverter {
     public TaskResponse convertToResponse(Task task);
-    public Task convertToTask(TaskRequest taskRequest);
 }

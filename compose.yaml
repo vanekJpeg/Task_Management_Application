@@ -1,6 +1,6 @@
 services:
   task:
-    image: ivshvl/dockerhub:taskfinalv
+    image: ivshvl/dockerhub:finaltask7
     restart: always
     environment:
       DBHOST: db
@@ -12,6 +12,7 @@ services:
       - "db"
 
   db:
+    container_name: postgres_container
     image: postgres:16.1
     restart: always
     ports:

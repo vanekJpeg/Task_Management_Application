@@ -59,22 +59,5 @@ class TaskConverterTest {
         assertEquals(response1, responseEntity1);
     }
 
-    @Test
-    void convertToTask() {
-        //given
-        TaskRequest request = new TaskRequest("text","desc","email@mail.ru");
-        User executor =new User();
-        executor.setEmail("email@mail.ru");
-        Task task = new Task();
-        task.setId(0);
-        task.setHeader("text");
-        task.setDescription("desc");
-        task.setStatus(null);
-        task.setExecutor(executor);
-        //when
-        var responseEntity1 = this.converter.convertToTask(request);
-        //then
-        assertNotNull(responseEntity1);
-        assertEquals(task, responseEntity1);
-    }
+
 }

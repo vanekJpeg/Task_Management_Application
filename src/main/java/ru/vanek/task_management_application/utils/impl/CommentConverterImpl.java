@@ -12,7 +12,6 @@ public class CommentConverterImpl implements CommentConverter {
     public CommentResponse convertToResponse(Comment comment) {
         return new CommentResponse(comment.getId(),comment.getText(),comment.getAuthor().getEmail(),comment.getCreatedAt());
     }
-
     @Override
     public Comment convertToComment(CommentRequest commentRequest) {
 
